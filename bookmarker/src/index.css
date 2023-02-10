@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "Neue Haas";
+  src: local("Neue Haas"),
+    url("./assets/NeueMontreal-Medium.ttf") format("truetype");
+}
+
+.App{
+  max-width: 1200px;
+  font-family: "Neue Haas";
+}
+
+/*form settings*/
+#url-field{
+  width: 90%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 0;
+  border-bottom:2px solid;
+}
+#submit-button{
+  width: 10%;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #000;
+  border: none;
+  color: #fff;
+  border:2px solid;
+  cursor: pointer;
+}
+
+/* table settings */
+table, tr{
+  width: 100%;
+  text-align: left;
+}
+td, th{
+  /* display:table-cell; */
+}
+
+.table-hidden{
+  display: none;
+}
+
+.table-display{
+  display: block;
+}
+
+#edit{
+  cursor: pointer;
+}
