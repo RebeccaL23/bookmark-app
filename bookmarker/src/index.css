@@ -9,19 +9,28 @@
   font-size: 1.1rem;
 }
 
+h1{
+  font-size: 48px;
+  text-align: left;
+}
+
 /*form settings*/
 #bookmark-form{
-  position: fixed;
+  /* position: fixed; */
   width: 100%;
   max-width: 1280px;
+  box-sizing: border-box;
 }
+
 #url-field, #notes-field{
   width: 45%;
   box-sizing: border-box;
   padding: 10px;
   border: 0;
-  border-bottom:2px solid;
+  border-bottom: 2px solid;
+
 }
+
 .btn{
   width: 10%;
   padding: 10px;
@@ -29,30 +38,24 @@
   background-color: #000;
   border: none;
   color: #fff;
-  border:2px solid;
+  border: 2px solid;
   cursor: pointer;
 }
 
 /* table settings */
 table{
-  display: table !important;
+  display: table;
   text-align: left;
   width: 100%;
 }
+
 tr{
   width: 100%;
 }
+
 td, th{
   padding: 0.2rem 0;
   text-align: left;
-}
-
-.table-hidden{
-  display: none;
-}
-
-.table-display{
-  display: block;
 }
 
 #edit, #delete{
@@ -60,9 +63,21 @@ td, th{
   text-align: right;
 }
 
-/* remove all*/
+/* footer */
+#footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  align-items: center;
+}
+
+#footer div, #footer #remove-all {
+  width: 33%;
+}
+
 #remove-all{
   font-size: 0.9rem;
   font-style: italic;
   cursor: pointer;
+  text-align: right;
 }

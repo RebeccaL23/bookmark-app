@@ -7,7 +7,7 @@ import seed from "./seed"
 
 function App() {
 
-  /////// TYPES
+  ////////////////////////// TYPES DEFINITION //////////////////////////
   // define url type and validate url is real
   type Url = {
     url: string
@@ -15,6 +15,7 @@ function App() {
 
   // define individual bookmark type with properties: id, url, notes
   type Bookmark = Url & {
+    readonly key: string,
     readonly id: string,
     lastEdited: string,
     notes?: string // optional field
@@ -22,12 +23,12 @@ function App() {
 
   // define bookmarks as an array of objects
 
-  /////// URL error messages & form validation
+  ////////////////////////// URL error messages & form validation //////////////////////////
   // valid url
   // duplicate url
   // notes less than 100 characters
 
-  /////// INITIALISE STATES
+  ////////////////////////// INITIALISE STATES //////////////////////////
   // bookmarks should be initialised with saved local storage, if any, even after reload
   const [bookmarks, setBookmarks] = useState(
     () => JSON.parse(localStorage.getItem("bookmarks")) // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
@@ -44,7 +45,7 @@ function App() {
     localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
   }, [bookmarks])
 
-  /////// FUNCTIONS
+  ////////////////////////// FUNCTIONS //////////////////////////
   // get time / date now
   function lastEdited() {
     var currentdate = new Date();
@@ -60,9 +61,10 @@ function App() {
   function createBookmark() {
     const urlInput = document.getElementById("url-field").value
     const notesInput = document.getElementById("notes-field").value
-    console.log(bookmarks)
+
     // ensure new bookmark follows bookmark type
     const newBookmark: Bookmark = {
+        key: nanoid(),
         id: nanoid(),
         // get value from input form
         lastEdited: lastEdited(),
@@ -71,7 +73,6 @@ function App() {
     }
     // ensures prev bookmarks is an array, then adds the new bookmark
     setBookmarks((prevBookmarks: []) => [newBookmark, ...prevBookmarks])
-    console.log(bookmarks)
   }
 
   // edit bookmark
@@ -81,7 +82,7 @@ function App() {
             ? { ...prevBookmark, lastEdited: lastEdited(), url: url, notes: notes }
             : prevBookmark
     }))
-}
+  }
 
   // delete bookmark
   function deleteBookmark(event, id: string) {
@@ -90,7 +91,13 @@ function App() {
     setBookmarks(prevBookmarks => prevBookmarks.filter(bookmark => bookmark.id !== id))
   }
 
-  /////// PAGINATION
+  // delete all bookmarks
+  function deleteAll(event) {
+    event.stopPropagation()
+    setBookmarks([])
+  }
+
+  ////////////////////////// PAGINATION //////////////////////////
   // https://hygraph.com/blog/react-pagination
   const [currentPage, setCurrentPage] = useState(1);
   const bookmarksPerPage = 20;
@@ -110,34 +117,53 @@ function App() {
     color: false ? "#000" : "#fff"
   }
 
+  const displayTable = {
+    display: bookmarks.length === 0 ? "none" : "table"
+  }
+
+  const display = {
+    display: bookmarks.length === 0 ? "none" : "block"
+  }
+
+  const displayHeading = {
+    display: bookmarks.length === 0 ? "block" : "none"
+  }
+
   return (
     <div className="App">
-
-      <form id='bookmark-form' className={bookmarks === [""] ? 'form-default' : 'form-top'}>
-        <input id='url-field' type="url" name="url" placeholder="Enter URL" style={fieldDefault}></input>
+      <h1 style={displayHeading}>Add a bookmark</h1>
+      <form id='bookmark-form' className={bookmarks.length === 0 ? 'form-default' : 'form-top'}>
+        <input id='url-field' type="url" name="url" placeholder="Enter bookmark link" style={fieldDefault}></input>
         <input id='notes-field' type="text" name="notes" placeholder="Leave a note. 100 characters or less." style={fieldDefault}></input>
         <button className='btn' id='submit-button' style={submitDefault} onClick={() => createBookmark()} >Save</button>
         {/* <p>Error Message</p> */}
       </form>
-      <table className={bookmarks != [] ? 'table-display' : 'table-hidden'}>
-        <tr>
-          <th>Last edited</th>
-          <th>Bookmark</th>
-          <th>Notes</th>
-        </tr>
+      <table style={displayTable}>
+        <thead>
+          <tr>
+            <th>Last edited</th>
+            <th>Bookmark</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
 
           {bookmarks.map((bookmark: Bookmark) => (
-            <tr>
-              <td>{bookmark.lastEdited}</td>
-              <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
-              <td>{bookmark.notes}</td>
-              <td id="edit" >Edit</td>
-              <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>{bookmark.lastEdited}</td>
+                <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
+                <td>{bookmark.notes}</td>
+                <td id="edit" >Edit</td>
+                <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
+              </tr>
+            </tbody>
           ))}
 
       </table>
-      <p id='remove-all'>Remove all bookmarks</p>
+      <div id='footer'>
+        <div id='pagination'>1, 2, 3</div>
+        <p id='remove-all' style={display} onClick={(event) => deleteAll(event)}>Remove all bookmarks</p>
+      </div>
     </div>
   )
 }
