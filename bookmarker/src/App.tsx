@@ -21,7 +21,6 @@ function App() {
   }
 
   // define bookmarks as an array of objects
-  let userTestStatus: { id: number, name: string }[]
 
   /////// URL error messages
   // valid url
@@ -56,7 +55,7 @@ function App() {
   function createBookmark() {
     const urlInput = document.getElementById("url-field").value
     const notesInput = document.getElementById("notes-field").value
-
+    console.log(bookmarks)
     // ensure new bookmark follows bookmark type
     const newBookmark: Bookmark = {
         id: nanoid(),
@@ -71,15 +70,24 @@ function App() {
   }
 
   // edit bookmark
-  function editBookmark(text) {
+  function editBookmark(url, notes) {
     setBookmarks(prevBookmarks => prevBookmarks.map(prevBookmark => {
         return prevBookmark.id === currentBookmarkId
-            ? { ...prevBookmark, lastEdited: lastEdited(), url: text }
+            ? { ...prevBookmark, lastEdited: lastEdited(), url: url, notes: notes }
             : prevBookmark
     }))
 }
 
   // delete bookmark
+
+  /////// PAGINATION
+  // https://hygraph.com/blog/react-pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const bookmarksPerPage = 20;
+
+  const indexOfLastBookmark = currentPage * bookmarksPerPage;
+  const indexOfFirstPost = indexOfLastBookmark - bookmarksPerPage;
+  const currentPosts = bookmarks.slice(indexOfFirstPost, indexOfLastBookmark);
 
   /////// STYLES based on state
 
