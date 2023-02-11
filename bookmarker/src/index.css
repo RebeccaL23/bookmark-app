@@ -10,8 +10,8 @@
 }
 
 /*form settings*/
-#url-field{
-  width: 90%;
+#url-field, #notes-field{
+  width: 45%;
   box-sizing: border-box;
   padding: 10px;
   border: 0;

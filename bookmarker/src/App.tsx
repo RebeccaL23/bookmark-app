@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import {nanoid} from "nanoid"
-import "./seed"
+import seed from "./seed"
 
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
   type Bookmark = Url & {
     readonly id: string,
     lastEdited: string,
-    // notes?: string // optional field
+    notes?: string // optional field
   }
 
   // define bookmarks as an array of objects
@@ -30,8 +30,9 @@ function App() {
   /////// INITIALISE STATES
   // bookmarks should be initialised with saved local storage, if any, even after reload
   const [bookmarks, setBookmarks] = useState(
-    // () => JSON.parse(localStorage.get("bookmarks")) || []
-    []
+    // () => JSON.parse(localStorage.get("bookmarks" || "")) || seed
+    // seed file to input default data
+    seed
   )
 
   const [currentBookmarkId, setCurrentBookmarkId] = useState(
@@ -54,12 +55,14 @@ function App() {
   // create new bookmark
   function createBookmark() {
     const urlInput = document.getElementById("url-field").value
+    const notesInput = document.getElementById("notes-field").value
 
     // ensure new bookmark follows bookmark type
     const newBookmark: Bookmark = {
         id: nanoid(),
         // get value from input form
         lastEdited: lastEdited(),
+        notes: notesInput,
         url: urlInput
     }
     // ensures prev bookmarks is an array, then adds the new bookmark
@@ -94,6 +97,7 @@ function App() {
 
       <form id='bookmark-form' className={bookmarks === [""] ? 'form-default' : 'form-top'}>
         <input id='url-field' type="url" name="url" placeholder="Enter URL" style={fieldDefault}></input>
+        <input id='notes-field' type="text" name="notes" placeholder="Leave a note. 100 characters or less." style={fieldDefault}></input>
         <button id='submit-button' style={submitDefault} onClick={() => createBookmark()} >Save</button>
         <p>Error Message</p>
       </form>
@@ -101,7 +105,7 @@ function App() {
       <table className={bookmarks != [] ? 'table-display' : 'table-hidden'}>
         <tr>
           <th>Last edited</th>
-          <th>Bookmark Link</th>
+          <th>Bookmark</th>
           <th>Notes</th>
         </tr>
 
@@ -109,7 +113,7 @@ function App() {
             <tr>
               <td>{bookmark.lastEdited}</td>
               <td><a href={bookmark.url}>{bookmark.url}</a></td>
-              // <td>{bookmark.notes}</td>
+              <td>{bookmark.notes}</td>
               <td id="edit">Edit</td>
             </tr>
           ))}
