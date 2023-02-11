@@ -6,9 +6,15 @@
 
 .App{
   font-family: "Neue Haas";
+  font-size: 1.1rem;
 }
 
 /*form settings*/
+#bookmark-form{
+  position: fixed;
+  width: 100%;
+  max-width: 1280px;
+}
 #url-field, #notes-field{
   width: 45%;
   box-sizing: border-box;
@@ -16,7 +22,7 @@
   border: 0;
   border-bottom:2px solid;
 }
-#submit-button{
+.btn{
   width: 10%;
   padding: 10px;
   box-sizing: border-box;
@@ -34,9 +40,10 @@ table{
   width: 100%;
 }
 tr{
-  width: 100%;;
+  width: 100%;
 }
 td, th{
+  padding: 0.2rem 0;
   text-align: left;
 }
 
@@ -48,7 +55,14 @@ td, th{
   display: block;
 }
 
-#edit{
+#edit, #delete{
   cursor: pointer;
   text-align: right;
+}
+
+/* remove all*/
+#remove-all{
+  font-size: 0.9rem;
+  font-style: italic;
+  cursor: pointer;
 }
