@@ -1,42 +1,104 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+@font-face {
+  font-family: "Neue Haas";
+  src: local("Neue Haas"),
+    url("./assets/NeueMontreal-Medium.ttf") format("truetype");
 }
 
-@keyframes logo-spin {
+.App{
+  font-family: "Neue Haas";
+  font-size: 1.1rem;
+  width: 100%;
+  height: 100%;
+}
+
+#header{
+  /* display: flex; */
+  width: 100%;
+}
+
+h1{
+  font-size: 48px;
+  text-align: left;
+}
+
+/*form settings*/
+#bookmark-form{
+  /* position: fixed; */
+  width: 100%;
+  max-width: 1280px;
+  box-sizing: border-box;
+}
+
+#url-field, #notes-field{
+  width: 45%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 0;
+  border-bottom: 2px solid;
+
+}
+
+.btn{
+  width: 10%;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #000;
+  border: none;
+  color: #fff;
+  border: 2px solid;
+  cursor: pointer;
+}
+
+/* table settings */
+table{
+  display: table;
+  text-align: left;
+  width: 100%;
+}
+
+tr{
+  width: 100%;
+}
+
+td, th{
+  padding: 0.2rem 0;
+  text-align: left;
+}
+
+#edit, #delete{
+  cursor: pointer;
+  text-align: right;
+}
+
+/* footer */
+#footer{
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  align-items: center;
+}
+
+#footer div, #footer #remove-all {
+  width: 33%;
+}
+
+#remove-all{
+  font-size: 0.9rem;
+  font-style: italic;
+  cursor: pointer;
+  text-align: right;
+}
+
+/* @keyframes logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+} */

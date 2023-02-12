@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+// import Bookmark from './components/bookmark'
 import {nanoid} from "nanoid" // for custom created ids
 import seed from "./seed" // "seed" file for default data
 
@@ -28,6 +29,11 @@ function App() {
   // notes less than 100 characters
 
   ////////////////////////// INITIALISE STATES //////////////////////////
+  // edit mode vs create mode
+  const [editMode, setEditMode] = useState(false)
+
+  const [editId, setEditId] = useState("")
+
   // bookmarks should be initialised with saved local storage, if any, even after reload
   const [bookmarks, setBookmarks] = useState(
     () => JSON.parse(localStorage.getItem("bookmarks")) // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
@@ -46,10 +52,22 @@ function App() {
 
   ////////////////////////// FUNCTIONS //////////////////////////
 
+  // const allBookmarks = bookmarks.map(bookmark => {
+  //   return (
+  //       <Bookmark
+  //           id={bookmark.id}
+  //           url={bookmark.url}
+  //           notes={bookmark.notes}
+  //           lastEdited={bookmark.lastEdited}
+  //           onClick={props.loadBookmark(props.id)}
+  //       />
+
+  //   )
+  // })
+
   // get time / date now
   function lastEdited() {
     var currentdate = new Date();
-
     // currentdate.getHours() + ":"
     // + currentdate.getMinutes() + " on " +
     return currentdate.getDate() + "/"
@@ -76,39 +94,37 @@ function App() {
   }
 
   // load existing bookmark in form
-  function loadBookmark(id) {
+  function loadBookmark(event, id) {
     // if bookmark id matches bookmark in array, then show the values of the bookmark in the form
     const urlInput = document.getElementById("url-field")
     const notesInput = document.getElementById("notes-field")
+    setEditMode(true)
+    console.log(bookmarks)
 
     bookmarks.map(bookmark => {
       if (bookmark.id === id) {
         urlInput.value = bookmark.url
         notesInput.value = bookmark.notes
-
+        setEditId(bookmark.id)
       }
     })
   }
 
-  // edit button
-  // const editButton = {
-  //   return (
-  //     <button className='btn' id='submit-button' style={submitDefault} onClick={() => editBookmark()} >Save</button>
-  //   )
-  // }
-
   // edit bookmark
   function editBookmark(event, id) {
     // urlInput.value = bookmarks
+    event.preventDefault()
+    event.stopPropagation()
     const urlInput = document.getElementById("url-field")
     const notesInput = document.getElementById("notes-field")
 
     setBookmarks(prevBookmarks => prevBookmarks.map(bookmark => {
-        return bookmark.id === id ?
-          { ...bookmark, lastEdited: lastEdited(), url: urlInput, notes: notesInput }
-          :
-          bookmark
+      // console.log("EDIT ID" + id.editId)
+      // console.log(bookmark.id)
+        bookmark.id === id.editId ? {lastEdited: lastEdited(), url: urlInput, notes: notesInput} : bookmark
     }))
+
+    console.log(bookmarks)
   }
 
   // delete bookmark
@@ -134,7 +150,6 @@ function App() {
   const currentPosts = bookmarks.slice(indexOfFirstPost, indexOfLastBookmark);
 
   /////// STYLES based on state
-
   const fieldDefault = {
     borderBottom: bookmarks === true ? "#fff 2px solid" : "#000 2px solid"
   }
@@ -159,15 +174,19 @@ function App() {
   return (
     <div className="App">
 
-      <h1 style={displayHeading}>Add a bookmark</h1>
+      <div id="header">
+        <h1 style={displayHeading}>Add a bookmark</h1>
 
-      <form id='bookmark-form' className={bookmarks.length === 0 ? 'form-default' : 'form-top'}>
-        <input id='url-field' type="url" name="url" placeholder="Enter bookmark link" style={fieldDefault}></input>
-        <input id='notes-field' type="text" name="notes" placeholder="Leave a note. 100 characters or less." style={fieldDefault}></input>
-        <button className='btn' id='submit-button' style={submitDefault} onClick={() => createBookmark()} >Save</button>
-
-        {/* <p>Error Message</p> */}
-      </form>
+        <form id='bookmark-form' className={bookmarks.length === 0 ? 'form-default' : 'form-top'}>
+          <input id='url-field' type="url" name="url" placeholder="Enter bookmark link" style={fieldDefault}></input>
+          <input id='notes-field' type="text" name="notes" placeholder="Leave a note. 100 characters or less." style={fieldDefault}></input>
+          { editMode ?
+            <button className='btn' id='edit-button' style={submitDefault} onClick={(event) => editBookmark(event, {editId})} >Edit</button> :
+            <button className='btn' id='submit-button' style={submitDefault} onClick={() => createBookmark()} >Save</button>
+          }
+          {/* <p>Error Message</p> */}
+        </form>
+      </div>
 
       <table style={displayTable}>
 
@@ -179,13 +198,27 @@ function App() {
           </tr>
         </thead>
 
+        {/* { bookmarks.map((bookmark: Bookmark) => {
+          return (
+            <tbody>
+              <tr>
+                <td>{bookmark.lastEdited}</td>
+                <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
+                <td>{bookmark.notes}</td>
+                <td id="edit" onClick={(event) => loadBookmark(event, bookmark.id)}>Edit</td>
+                <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
+              </tr>
+            </tbody>
+          )
+        })} */}
+
         {bookmarks.map((bookmark: Bookmark) => (
           <tbody>
             <tr>
               <td>{bookmark.lastEdited}</td>
               <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
               <td>{bookmark.notes}</td>
-              <td id="edit" onClick={(event) => loadBookmark(bookmark.id)}>Edit</td>
+              <td id="edit" onClick={(event) => loadBookmark(event, bookmark.id)}>Edit</td>
               <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
             </tr>
           </tbody>
@@ -194,7 +227,7 @@ function App() {
       </table>
 
       <div id='footer'>
-        <div id='pagination'>1, 2, 3</div>
+        <div id='pagination' style={display}>1, 2, 3</div>
         <p id='remove-all' style={display} onClick={(event) => deleteAll(event)}>Remove all bookmarks</p>
       </div>
 
