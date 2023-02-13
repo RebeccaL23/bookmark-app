@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 // import Bookmark from './components/bookmark'
+import Pagination from './components/pagination'
 import {nanoid} from "nanoid" // for custom created ids
 import seed from "./seed" // "seed" file for default data
 
@@ -15,9 +16,10 @@ function App() {
 
   // define individual bookmark type with properties: id, url, notes
   type Bookmark = Url & {
-    readonly key: string,
+    // readonly key: string,
     readonly id: string,
-    lastEdited: string,
+    lastEditedRaw: Date,
+    lastEditedDate: string,
     notes?: string | null// optional field
   }
 
@@ -66,26 +68,27 @@ function App() {
   // })
 
   // get time / date now
-  function lastEdited() {
-    var currentdate = new Date();
+  function lastEdited(currentDate) {
     // currentdate.getHours() + ":"
     // + currentdate.getMinutes() + " on " +
-    return currentdate.getDate() + "/"
-    + (currentdate.getMonth()+1)  + "/"
-    + currentdate.getFullYear()
+    return currentDate.getDate() + "/"
+    + (currentDate.getMonth()+1)  + "/"
+    + currentDate.getFullYear()
   }
 
   // create new bookmark
   function createBookmark() {
     const urlInput = document.getElementById("url-field").value
     const notesInput = document.getElementById("notes-field").value
+    const currentDate = new Date();
 
     // ensure new bookmark follows bookmark type
     const newBookmark: Bookmark = {
-        key: nanoid(),
+        // key: nanoid(),
         id: nanoid(),
         // get value from input form
-        lastEdited: lastEdited(),
+        lastEditedRaw: currentDate,
+        lastEditedDate: lastEdited(this.lastEditedRaw),
         notes: notesInput,
         url: urlInput
     }
@@ -99,32 +102,41 @@ function App() {
     const urlInput = document.getElementById("url-field")
     const notesInput = document.getElementById("notes-field")
     setEditMode(true)
-    console.log(bookmarks)
 
     bookmarks.map(bookmark => {
       if (bookmark.id === id) {
         urlInput.value = bookmark.url
-        notesInput.value = bookmark.notes
+        notesInput.value = bookmark.notes || ""
         setEditId(bookmark.id)
       }
     })
   }
 
+  // sort bookmarks array by last edited (raw data) key in objects
+  function sortByDate(array, key) {
+    return array.sort(function(a, b) {
+      var x = a[key]; var y = b[key];
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+  }
+
   // edit bookmark
   function editBookmark(event, id) {
-    // urlInput.value = bookmarks
-    event.preventDefault()
+    // event.preventDefault()
     event.stopPropagation()
+    const currentDate = new Date()
     const urlInput = document.getElementById("url-field")
     const notesInput = document.getElementById("notes-field")
 
     setBookmarks(prevBookmarks => prevBookmarks.map(bookmark => {
-      // console.log("EDIT ID" + id.editId)
-      // console.log(bookmark.id)
-        bookmark.id === id.editId ? {lastEdited: lastEdited(), url: urlInput, notes: notesInput} : bookmark
+      if (bookmark.id === id.editId) {
+        return {...bookmark, lastEditedRaw: currentDate.getTime(), lastEditedDate: lastEdited(currentDate), url: urlInput.value, notes: notesInput.value}
+      } else {
+        return bookmark
+      }
     }))
 
-    console.log(bookmarks)
+    sortByDate(bookmarks, 'lastEditedRaw')
   }
 
   // delete bookmark
@@ -141,13 +153,14 @@ function App() {
   }
 
   ////////////////////////// PAGINATION //////////////////////////
-  // https://hygraph.com/blog/react-pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const bookmarksPerPage = 20;
 
-  const indexOfLastBookmark = currentPage * bookmarksPerPage;
-  const indexOfFirstPost = indexOfLastBookmark - bookmarksPerPage;
-  const currentPosts = bookmarks.slice(indexOfFirstPost, indexOfLastBookmark);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage] = useState(20);
+  const indexOfLastBookmark = currentPage * recordsPerPage; // takes last bookmark on page X
+  const indexOfFirstBookmark = indexOfLastBookmark - recordsPerPage; // takes first bookmark on page X
+  const currentRecords = bookmarks.slice(indexOfFirstBookmark, indexOfLastBookmark); // shows only bookmarks between first and last indexed bookmark on page X
+  const nPages = Math.ceil(bookmarks.length / recordsPerPage)
+  const pageNumbers = [...Array(nPages + 1).keys()].slice(1)
 
   /////// STYLES based on state
   const fieldDefault = {
@@ -215,7 +228,7 @@ function App() {
         {bookmarks.map((bookmark: Bookmark) => (
           <tbody>
             <tr>
-              <td>{bookmark.lastEdited}</td>
+              <td>{bookmark.lastEditedDate}</td>
               <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
               <td>{bookmark.notes}</td>
               <td id="edit" onClick={(event) => loadBookmark(event, bookmark.id)}>Edit</td>
@@ -227,7 +240,13 @@ function App() {
       </table>
 
       <div id='footer'>
-        <div id='pagination' style={display}>1, 2, 3</div>
+
+        {/* <Pagination
+          nPages = { nPages }
+          currentPage = { currentPage }
+          setCurrentPage = { setCurrentPage }
+        /> */}
+
         <p id='remove-all' style={display} onClick={(event) => deleteAll(event)}>Remove all bookmarks</p>
       </div>
 

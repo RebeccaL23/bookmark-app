@@ -3,124 +3,146 @@ import {nanoid} from "nanoid"
 export default [
   {
     id: nanoid(),
-    lastEdited: "18/10/2022",
+    lastEditedRaw: new Date("2022-10-18").getTime(),
+    lastEditedDate: "18/10/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "08/12/2022",
+    lastEditedRaw: new Date("2022-12-08").getTime(),
+    lastEditedDate: "08/12/2022",
     notes: "London-based agency to keep an 👀 on.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "11/12/2022",
+    lastEditedRaw: new Date("2022-12-11").getTime(),
+    lastEditedDate: "11/12/2022",
     notes: "Inspo for jewellery-making project",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "11/12/2022",
+    lastEditedRaw: new Date("2022-12-11").getTime(),
+    lastEditedDate: "11/12/2022",
     notes: "Next on the booklist",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "12/12/2022",
+    lastEditedRaw: new Date("2022-12-12").getTime(),
+    lastEditedDate: "12/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "19/12/2022",
+    lastEditedRaw: new Date("2022-12-19").getTime(),
+    lastEditedDate: "19/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "19/12/2022",
+    lastEditedRaw: new Date("2022-12-19").getTime(),
+    lastEditedDate: "19/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "19/12/2022",
+    lastEditedRaw: new Date("2022-12-19").getTime(),
+    lastEditedDate: "19/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "20/12/2022",
+    lastEditedRaw: new Date("2022-12-20").getTime(),
+    lastEditedDate: "20/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "21/12/2022",
+    lastEditedRaw: new Date("2022-12-22").getTime(),
+    lastEditedDate: "21/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "22/12/2022",
+    lastEditedRaw: new Date("2022-12-22").getTime(),
+    lastEditedDate: "22/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "24/12/2022",
+    lastEditedRaw: new Date("2022-12-24").getTime(),
+    lastEditedDate: "24/12/2022",
     notes: "Love this brand! On the lookout for new swimmers.",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "24/12/2022",
+    lastEditedRaw: new Date("2022-12-24").getTime(),
+    lastEditedDate: "24/12/2022",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "24/12/2022",
+    lastEditedRaw: new Date("2022-12-24").getTime(),
+    lastEditedDate: "24/12/2022",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "25/12/2022",
+    lastEditedRaw: new Date("2022-12-25").getTime(),
+    lastEditedDate: "25/12/2022",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "26/12/2022",
+    lastEditedRaw: new Date("2022-12-26").getTime(),
+    lastEditedDate: "26/12/2022",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "01/01/2023",
+    lastEditedRaw: new Date("2023-01-01").getTime(),
+    lastEditedDate: "01/01/2023",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "01/01/2023",
+    lastEditedRaw: new Date("2023-01-01").getTime(),
+    lastEditedDate: "01/01/2023",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "02/01/2023",
+    lastEditedRaw: new Date("2023-02-01").getTime(),
+    lastEditedDate: "02/01/2023",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "02/01/2023",
+    lastEditedRaw: new Date("2022-01-02").getTime(),
+    lastEditedDate: "02/01/2023",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "04/01/2023",
+    lastEditedRaw: new Date("2023-01-04").getTime(),
+    lastEditedDate: "04/01/2023",
     url: "https://phantom.land/work/festive-fiends"
   },
   {
     id: nanoid(),
-    lastEdited: "24/01/2023",
+    lastEditedRaw: new Date("2023-01-24").getTime(),
+    lastEditedDate: "24/01/2023",
     url: "https://phantom.land/work/festive-fiends"
   }
 ]
