@@ -7,7 +7,6 @@ import seed from "./seed" // "seed" file for default data
 
 
 function App() {
-
   ////////////////////////// TYPES DEFINITION //////////////////////////
   // define url type and validate url is real
   type Url = {
@@ -154,13 +153,14 @@ function App() {
 
   ////////////////////////// PAGINATION //////////////////////////
 
+  // https://levelup.gitconnected.com/a-simple-guide-to-pagination-in-react-facd6f785bd0
+
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(20);
   const indexOfLastBookmark = currentPage * recordsPerPage; // takes last bookmark on page X
   const indexOfFirstBookmark = indexOfLastBookmark - recordsPerPage; // takes first bookmark on page X
   const currentRecords = bookmarks.slice(indexOfFirstBookmark, indexOfLastBookmark); // shows only bookmarks between first and last indexed bookmark on page X
   const nPages = Math.ceil(bookmarks.length / recordsPerPage)
-  const pageNumbers = [...Array(nPages + 1).keys()].slice(1)
 
   /////// STYLES based on state
   const fieldDefault = {
@@ -241,11 +241,11 @@ function App() {
 
       <div id='footer'>
 
-        {/* <Pagination
-          nPages = { nPages }
-          currentPage = { currentPage }
-          setCurrentPage = { setCurrentPage }
-        /> */}
+        <Pagination
+          nPages = {nPages}
+          currentPage = {currentPage}
+          setCurrentPage = {setCurrentPage}
+        />
 
         <p id='remove-all' style={display} onClick={(event) => deleteAll(event)}>Remove all bookmarks</p>
       </div>
