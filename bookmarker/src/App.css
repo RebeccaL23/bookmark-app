@@ -41,11 +41,12 @@ h1{
 }
 
 #url-field, #notes-field{
-  width: 45%;
+  width: 44%;
   box-sizing: border-box;
   padding: 10px;
   border: 0;
-  border-bottom: 2px solid;
+  margin-right: 1px;
+  border: 1px solid #000;
 
 }
 
@@ -62,7 +63,7 @@ h1{
 
 /* table settings */
 .data{
-  height: 620px;
+  min-height: 620px;
   padding: 20px 0;
 }
 
@@ -71,6 +72,19 @@ table{
   text-align: left;
   width: 100%;
   overflow-y: scroll;
+}
+th:nth-child(1){
+  width: 9%;
+}
+th:nth-child(2){
+  width: 38%;
+}
+th:nth-child(3){
+  width: 41%;
+}
+
+th:nth-child(4), th:nth-child(5){
+  width: 6%;
 }
 
 tr{
@@ -93,6 +107,7 @@ td, th{
   flex-direction: row;
   justify-content: right;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 #footer .pagination, #footer #remove-all {

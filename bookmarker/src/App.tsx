@@ -6,7 +6,6 @@ import {nanoid} from "nanoid" // for custom created ids
 import seed from "./seed" // "seed" file for default data
 import { render } from 'react-dom'
 
-
 function App() {
   ////////////////////////// TYPES DEFINITION //////////////////////////
   // define url type and validate url is real
@@ -39,28 +38,24 @@ function App() {
     || seed // seed file to input default data
     )
 
-    const [currentBookmarkId, setCurrentBookmarkId] = useState(
-      // initialises as the first bookmark's id or an empty string, if bookmark is not empty
-      (bookmarks[0] && bookmarks[0].id) || ""
-      )
+  const [currentBookmarkId, setCurrentBookmarkId] = useState(
+    // initialises as the first bookmark's id or an empty string, if bookmark is not empty
+    (bookmarks[0] && bookmarks[0].id) || ""
+    )
 
-      // every time the bookmarks array changes, then run the function to set local storage (key = bookmarks, value = bookmarks array stringified)
-      useEffect(() => {
-        localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
-      }, [bookmarks])
+    // every time the bookmarks array changes, then run the function to set local storage (key = bookmarks, value = bookmarks array stringified)
+    useEffect(() => {
+      localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+    }, [bookmarks])
 
   ////////////////////////// FUNCTIONS //////////////////////////
 
-  ////////////////////////// URL error messages & form validation //////////////////////////
-  // valid url
-  // empty url
-  // duplicate url
-  // notes less than 100 characters
-
+  // URL error messages & form validation
   function validation(event){
     const urlInput = document.getElementById("url-field").value
     const notesInput = document.getElementById("notes-field")
     const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+    // const notesValidation = /{0,100}$/
     const regex = new RegExp(urlValidation)
 
     if (urlInput === "") {
@@ -76,12 +71,9 @@ function App() {
       setValidationMsg(3)
       return;
     } else {
-      // urlInput = ""
-      // notesInput = ""
       createBookmark()
       setValidationMsg(0)
     }
-    // return false;
   }
 
   // const allBookmarks = bookmarks.map(bookmark => {
@@ -97,10 +89,8 @@ function App() {
   //   )
   // })
 
-  // get time / date now
+  // convert Date to readable date
   function lastEdited(currentDate) {
-    // currentdate.getHours() + ":"
-    // + currentdate.getMinutes() + " on " +
     return currentDate.getDate() + "/"
     + (currentDate.getMonth()+1)  + "/"
     + currentDate.getFullYear()
@@ -111,21 +101,19 @@ function App() {
     const urlInput = document.getElementById("url-field").value
     const notesInput = document.getElementById("notes-field").value
     const currentDate = new Date();
-    // ensure new bookmark follows bookmark type
+
     const newBookmark: Bookmark = {
-        // key: nanoid(),
         id: nanoid(),
-        // get value from input form
         lastEditedRaw: currentDate.getTime(),
         lastEditedDate: lastEdited(currentDate),
         notes: notesInput,
         url: urlInput
     }
-    // ensures prev bookmarks is an array, then adds the new bookmark
+    // adds new bookmark to the bookmarks array
     setBookmarks((prevBookmarks: []) => [newBookmark, ...prevBookmarks])
   }
 
-  // load existing bookmark in form
+  // load existing bookmark in form on Edit click
   function loadBookmark(event, id) {
     // if bookmark id matches bookmark in array, then show the values of the bookmark in the form
     const urlInput = document.getElementById("url-field")
@@ -146,8 +134,8 @@ function App() {
     // event.preventDefault()
     event.stopPropagation()
     const currentDate = new Date()
-    let urlInput = document.getElementById("url-field")
-    let notesInput = document.getElementById("notes-field")
+    const urlInput = document.getElementById("url-field")
+    const notesInput = document.getElementById("notes-field")
 
     setBookmarks(prevBookmarks => prevBookmarks.reverse().map(bookmark => {
       if (bookmark.id === id.editId) {
@@ -163,14 +151,16 @@ function App() {
 
   // delete bookmark
   function deleteBookmark(event, id: string) {
-    // find id of bookmark in bookmarks array & splice
+    // find id of bookmark in bookmarks array & return new array of filtered out bookmark
     event.stopPropagation()
     setBookmarks(prevBookmarks => prevBookmarks.filter(bookmark => bookmark.id !== id))
   }
 
   // delete all bookmarks
   function deleteAll(event) {
+    document.getElementById("bookmark-form").reset()
     event.stopPropagation()
+    setEditMode(false)
     setBookmarks([])
     setValidationMsg(0)
   }
@@ -216,13 +206,13 @@ function App() {
 
         <form id='bookmark-form' className={bookmarks.length === 0 ? 'form-default' : 'form-top'}>
           <input id='url-field' type="text" name="url" placeholder="Enter bookmark link" style={fieldDefault}></input>
-          <input id='notes-field' type="text" name="notes" placeholder="Leave a note. 100 characters or less." style={fieldDefault}></input>
+          <input id='notes-field' type="text" name="notes" placeholder="Leave a note" style={fieldDefault}></input>
           { editMode ?
             <button className='btn' id='edit-button' style={submitDefault} onClick={(event) => editBookmark(event, {editId})} >Edit</button> :
             <button className='btn' id='submit-button' style={submitDefault} onClick={(event) =>validation(event)} >Save</button>
           }
           { validationMsg === 1
-          ? <p className="validation">UH OH, URL IS EMPTY.</p>
+          ? <p className="validation">HMM, THAT LOOKS EMPTY.</p>
           : validationMsg === 2
             ? <p className="validation">MUST BE GOOD–YOU'VE ALREADY SAVED THAT.</p>
             : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p> : ""
@@ -232,11 +222,14 @@ function App() {
 
       <div className="data">
         <table style={displayTable}>
+
           <thead>
             <tr>
               <th>Last edited</th>
               <th>Bookmark</th>
               <th>Notes</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
 
