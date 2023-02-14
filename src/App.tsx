@@ -56,15 +56,6 @@ function App() {
     const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
     const regex = new RegExp(urlValidation)
 
-    const isValidUrl = (urlString: string) => {
-      try {
-      	return Boolean(new URL(urlString));
-      }
-      catch(e){
-      	return false;
-      }
-    }
-
     if (urlInput === "") {
       e.preventDefault()
       setValidationMsg(1)
@@ -76,10 +67,6 @@ function App() {
     } else if (!urlInput.match(regex)) {
       e.preventDefault()
       setValidationMsg(3)
-      return;
-    } else if (isValidUrl(urlInput)){
-      e.preventDefault()
-      setValidationMsg(4)
       return;
     } else {
       createBookmark()
@@ -212,8 +199,7 @@ function App() {
           ? <p className="validation">HMM, THAT LOOKS EMPTY.</p>
           : validationMsg === 2
             ? <p className="validation">MUST BE GOOD–YOU'VE ALREADY SAVED THAT.</p>
-            : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p>
-            : validationMsg === 4 ? <p className="validation">IT DOESN'T LOOK LIKE THAT PAGE EXISTS.</p> : ""
+            : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p> : ""
           }
         </form>
       </div>
