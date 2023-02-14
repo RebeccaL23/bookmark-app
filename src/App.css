@@ -66,6 +66,11 @@ h1{
   cursor: pointer;
 }
 
+.btn:hover{
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
 /* table settings */
 .data{
   min-height: 620px;
@@ -77,6 +82,10 @@ table{
   text-align: left;
   width: 100%;
   overflow-y: scroll;
+}
+
+table a:active, table a:visited, table a{
+  color: rgb(0, 108, 250) !important;
 }
 
 th:nth-child(1){
@@ -127,6 +136,7 @@ td, th{
   font-size: 0.75rem;
   cursor: pointer;
   text-align: right;
+  color: rgb(133, 133, 133);
 }
 
 .page-controls {

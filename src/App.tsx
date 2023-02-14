@@ -16,7 +16,7 @@ function App() {
     lastEditedRaw: number,
     url: string
     lastEditedDate: string,
-    notes?: string | null// optional field
+    notes?: string | null // optional field
   }
 
   type Pagination = {
@@ -34,7 +34,7 @@ function App() {
 
   // bookmarks should be initialised with saved local storage, if any, even after reload
   const [bookmarks, setBookmarks] = useState(
-    () => JSON.parse(localStorage.getItem("bookmarks")) // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
+    () => JSON.parse(localStorage.getItem("bookmarks") || "") // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
     || seed // seed file to input default data
     )
 
