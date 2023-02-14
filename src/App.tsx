@@ -196,6 +196,7 @@ function App() {
     display: bookmarks.length === 0 ? "block" : "none"
   }
 
+  // styled components
   const flexAnimation = keyframes`
   from {
     color: #000;
