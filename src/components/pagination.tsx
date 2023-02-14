@@ -1,6 +1,12 @@
 import { useState } from 'react'
 
-export default function Pagination(props)  {
+interface Props {
+  nPages: number,
+  currentPage: number,
+  setCurrentPage: any,
+};
+
+const Pagination: React.FC<Props> = (props) => {
   const pageNumbers = [...Array(props.nPages + 1).keys()].slice(1)
 
   const nextPage = () => {
@@ -44,3 +50,5 @@ export default function Pagination(props)  {
     </div>
   )
 }
+
+export default Pagination
