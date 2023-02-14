@@ -59,6 +59,7 @@ table{
   display: table;
   text-align: left;
   width: 100%;
+  overflow-y: scroll;
 }
 
 tr{
@@ -83,17 +84,84 @@ td, th{
   align-items: center;
 }
 
-#footer div, #footer #remove-all {
+#footer .pagination, #footer #remove-all {
   width: 33%;
 }
 
 #remove-all{
-  font-size: 0.9rem;
-  font-style: italic;
+  font-size: 0.75rem;
   cursor: pointer;
   text-align: right;
 }
 
+.page-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.pages{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#active-page{
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+
+}
+
+.pagination{
+  display: flex;
+  flex-direction: row;
+  font-size: 0.75rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pagination a, .pagination a:active, .pagination a:hover, .pagination a:visited{
+  color: #000;
+  text-decoration: none;
+  text-align: center;
+}
+
+.page{
+  width: 10px;
+}
+
+.page-number{
+  height: 18px;
+  width: 18px;
+  margin: 0 2px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.page-number:hover{
+  background: #000;
+  transition: 0.2s;
+}
+
+.page-number:hover > a{
+  color: #fff;
+}
+
+.active-page{
+  background: #000;
+  text-align: center;
+}
+
+.active-page a{
+  color: #fff;
+}
 /* @keyframes logo-spin {
   from {
     transform: rotate(0deg);

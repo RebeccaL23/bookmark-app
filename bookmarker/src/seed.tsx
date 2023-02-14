@@ -129,7 +129,7 @@ export default [
   },
   {
     id: nanoid(),
-    lastEditedRaw: new Date("2022-01-02").getTime(),
+    lastEditedRaw: new Date("2023-01-02").getTime(),
     lastEditedDate: "02/01/2023",
     url: "https://phantom.land/work/festive-fiends"
   },

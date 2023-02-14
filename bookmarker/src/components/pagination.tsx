@@ -4,30 +4,43 @@ export default function Pagination(props)  {
   const pageNumbers = [...Array(props.nPages + 1).keys()].slice(1)
 
   const nextPage = () => {
-    if(currentPage !== nPages)
-    setCurrentPage(currentPage + 1)
+    if(props.currentPage !== props.nPages) {
+      props.setCurrentPage(props.currentPage + 1)
+    } else {
+
+    }
   }
+
   const prevPage = () => {
-    if(currentPage !== 1)
-    setCurrentPage(currentPage - 1)
+    if(props.currentPage !== 1) {
+      props.setCurrentPage(props.currentPage - 1)
+    } else {
+
+    }
   }
 
   return (
-    <>
+    <div className="pagination">
       <div id="pagination-prev" className="prev-next">
-        <a href="#" onClick={prevPage} >Previous</a>
+        <a href="#" onClick={prevPage} >PREVIOUS</a>
       </div>
-      <div>
-        {pageNumbers.map(page =>{
-          return(
-            <div>{page}</div>
-          )
-        })
-        }
+      <div className="page-controls">
+        <div className="pages">
+          {pageNumbers.map(page =>{
+            return(
+              <div className={`page-number ${props.currentPage === page ? "active-page" : ""}`}>
+                <a className="page" onClick={() => props.setCurrentPage(page)} href="#">
+                  {page}
+                </a>
+              </div>
+            )
+          })
+          }
+        </div>
       </div>
       <div id="pagination-next" className="prev-next">
-        <a href="#" onClick={nextPage} >Next</a>
+        <a href="#" onClick={nextPage} >NEXT</a>
       </div>
-    </>
+    </div>
   )
 }
