@@ -34,7 +34,7 @@ function App() {
 
   // bookmarks should be initialised with saved local storage, if any, even after reload
   const [bookmarks, setBookmarks] = useState(
-    () => JSON.parse(localStorage.getItem("bookmarks") || '{}') // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
+    () => JSON.parse(localStorage.getItem("bookmarks")) // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
     || seed // seed file to input default data
     )
 
@@ -146,7 +146,7 @@ function App() {
   // delete all bookmarks
   function deleteAll(e: React.SyntheticEvent) {
     (document.getElementById("bookmark-form") as HTMLFormElement).reset()
-    e.stopPropagation()
+    // e.stopPropagation()
     setEditMode(false)
     setBookmarks([])
     setValidationMsg(0)
