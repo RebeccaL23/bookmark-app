@@ -59,23 +59,29 @@ function App() {
 
   function validation(event){
     const urlInput = document.getElementById("url-field").value
-    const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+    const notesInput = document.getElementById("notes-field")
+    const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
     const regex = new RegExp(urlValidation)
 
     if (urlInput === "") {
+      event.preventDefault()
       setValidationMsg(1)
       return;
     } else if ( bookmarks.find(o => o.url === urlInput) ){ // duplicate url
+      event.preventDefault()
       setValidationMsg(2)
       return;
     } else if (!urlInput.match(regex)) {
+      event.preventDefault()
       setValidationMsg(3)
       return;
     } else {
-      console.log('OK')
+      // urlInput = ""
+      // notesInput = ""
       createBookmark()
       setValidationMsg(0)
     }
+    // return false;
   }
 
   // const allBookmarks = bookmarks.map(bookmark => {
@@ -135,31 +141,24 @@ function App() {
     })
   }
 
-  // sort bookmarks array by last edited (raw data) key in objects
-  function sortByDate(array, key) {
-    return array.sort(function(a, b) {
-      var x = a[key]; var y = b[key];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
-  }
-
   // edit bookmark
-  function editBookmark(event, id, callback) {
+  function editBookmark(event, id) {
     // event.preventDefault()
     event.stopPropagation()
     const currentDate = new Date()
-    const urlInput = document.getElementById("url-field")
-    const notesInput = document.getElementById("notes-field")
+    let urlInput = document.getElementById("url-field")
+    let notesInput = document.getElementById("notes-field")
 
-    setBookmarks(prevBookmarks => prevBookmarks.map(bookmark => {
+    setBookmarks(prevBookmarks => prevBookmarks.reverse().map(bookmark => {
       if (bookmark.id === id.editId) {
         return {...bookmark, lastEditedRaw: currentDate.getTime(), lastEditedDate: lastEdited(currentDate), url: urlInput.value, notes: notesInput.value}
       } else {
         return bookmark
       }
+    }).sort(function(a, b) {
+      var x = a["lastEditedRaw"]; var y = b["lastEditedRaw"];
+      return ((x > y) ? -1 : ((x < y) ? 1 : 0));
     }))
-
-    // sortByDate(bookmarks, 'lastEditedRaw')
   }
 
   // delete bookmark
@@ -173,6 +172,7 @@ function App() {
   function deleteAll(event) {
     event.stopPropagation()
     setBookmarks([])
+    setValidationMsg(0)
   }
 
   ////////////////////////// PAGINATION //////////////////////////
@@ -215,66 +215,67 @@ function App() {
         <h1 style={displayHeading}>Add a bookmark</h1>
 
         <form id='bookmark-form' className={bookmarks.length === 0 ? 'form-default' : 'form-top'}>
-          <input id='url-field' type="url" name="url" placeholder="Enter bookmark link" style={fieldDefault}></input>
+          <input id='url-field' type="text" name="url" placeholder="Enter bookmark link" style={fieldDefault}></input>
           <input id='notes-field' type="text" name="notes" placeholder="Leave a note. 100 characters or less." style={fieldDefault}></input>
           { editMode ?
             <button className='btn' id='edit-button' style={submitDefault} onClick={(event) => editBookmark(event, {editId})} >Edit</button> :
-            <button className='btn' id='submit-button' style={submitDefault} onClick={validation} >Save</button>
+            <button className='btn' id='submit-button' style={submitDefault} onClick={(event) =>validation(event)} >Save</button>
           }
           { validationMsg === 1
-          ? <p className="validation">Empty url.</p>
+          ? <p className="validation">UH OH, URL IS EMPTY.</p>
           : validationMsg === 2
-            ? <p className="validation">Duplicate url</p>
-            : validationMsg === 3 ? <p className="validation">That's not a url</p> : createBookmark()
+            ? <p className="validation">MUST BE GOOD–YOU'VE ALREADY SAVED THAT.</p>
+            : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p> : ""
           }
         </form>
       </div>
 
-      <table style={displayTable}>
+      <div className="data">
+        <table style={displayTable}>
+          <thead>
+            <tr>
+              <th>Last edited</th>
+              <th>Bookmark</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
 
-        <thead>
-          <tr>
-            <th>Last edited</th>
-            <th>Bookmark</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
+          {/* { bookmarks.map((bookmark: Bookmark) => {
+            return (
+              <tbody>
+                <tr>
+                  <td>{bookmark.lastEdited}</td>
+                  <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
+                  <td>{bookmark.notes}</td>
+                  <td id="edit" onClick={(event) => loadBookmark(event, bookmark.id)}>Edit</td>
+                  <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
+                </tr>
+              </tbody>
+            )
+          })} */}
 
-        {/* { bookmarks.map((bookmark: Bookmark) => {
-          return (
+          {currentBookmarks.map((bookmark: Bookmark) => (
             <tbody>
               <tr>
-                <td>{bookmark.lastEdited}</td>
+                <td>{bookmark.lastEditedDate}</td>
                 <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
                 <td>{bookmark.notes}</td>
                 <td id="edit" onClick={(event) => loadBookmark(event, bookmark.id)}>Edit</td>
                 <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
               </tr>
             </tbody>
-          )
-        })} */}
+          ))}
+        </table>
+      </div>
 
-        {currentBookmarks.map((bookmark: Bookmark) => (
-          <tbody>
-            <tr>
-              <td>{bookmark.lastEditedDate}</td>
-              <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
-              <td>{bookmark.notes}</td>
-              <td id="edit" onClick={(event) => loadBookmark(event, bookmark.id)}>Edit</td>
-              <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
-            </tr>
-          </tbody>
-        ))}
-
-      </table>
 
       <div id='footer'>
 
-        <Pagination
+        {bookmarks.length === 0 ? "" : <Pagination
           nPages = {nPages}
           currentPage = {currentPage}
           setCurrentPage = {setCurrentPage}
-        />
+        />}
 
         <p id='remove-all' style={display} onClick={(event) => deleteAll(event)}>REMOVE ALL BOOKMARKS</p>
       </div>

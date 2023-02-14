@@ -26,6 +26,12 @@ h1{
   text-align: left;
 }
 
+.validation{
+  width: 100%;
+  font-size: 0.75rem;
+  color: red;
+}
+
 /*form settings*/
 #bookmark-form{
   /* position: fixed; */
@@ -55,6 +61,11 @@ h1{
 }
 
 /* table settings */
+.data{
+  height: 620px;
+  padding: 20px 0;
+}
+
 table{
   display: table;
   text-align: left;
@@ -98,7 +109,6 @@ td, th{
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
 }
 
 .pages{
@@ -119,7 +129,7 @@ td, th{
   display: flex;
   flex-direction: row;
   font-size: 0.75rem;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 
