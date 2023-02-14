@@ -167,7 +167,7 @@ td, th{
   align-items: center;
 }
 
-.pagination a, .pagination a:active, .pagination a:hover, .pagination a:visited{
+.pagination a, .pagination a:active, .pagination a:hover{
   color: #000;
   text-decoration: none;
   text-align: center;
