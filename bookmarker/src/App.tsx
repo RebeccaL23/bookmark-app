@@ -5,6 +5,7 @@ import Pagination from './components/pagination'
 import {nanoid} from "nanoid" // for custom created ids
 import seed from "./seed" // "seed" file for default data
 import { render } from 'react-dom'
+import styled, { keyframes } from "styled-components"
 
 function App() {
   ////////////////////////// TYPES DEFINITION //////////////////////////
@@ -177,9 +178,6 @@ function App() {
   const nPages = Math.ceil(bookmarks.length / recordsPerPage)
 
   /////// STYLES based on state
-  const fieldDefault = {
-    borderBottom: bookmarks === true ? "#fff 2px solid" : "#000 2px solid"
-  }
 
   const submitDefault = {
     background: false ? "#fff" : "#000",
@@ -198,15 +196,27 @@ function App() {
     display: bookmarks.length === 0 ? "block" : "none"
   }
 
+  const flexAnimation = keyframes`
+  from {
+    color: #000;
+  } to {
+    color: #fff;
+  }`
+
+  const Title = styled.h1`
+    animation-name: ${flexAnimation};
+    animation-duration: 1s;
+  `
+
   return (
-    <div className="App">
+    <div className={`App ${bookmarks.length === 0 ? "flex" : ""}`}>
 
       <div id="header">
         <h1 style={displayHeading}>Add a bookmark</h1>
 
         <form id='bookmark-form' className={bookmarks.length === 0 ? 'form-default' : 'form-top'}>
-          <input id='url-field' type="text" name="url" placeholder="Enter bookmark link" style={fieldDefault}></input>
-          <input id='notes-field' type="text" name="notes" placeholder="Leave a note" style={fieldDefault}></input>
+          <input id='url-field' type="text" name="url" placeholder="Enter bookmark link"></input>
+          <input id='notes-field' type="text" name="notes" placeholder="Leave a note"></input>
           { editMode ?
             <button className='btn' id='edit-button' style={submitDefault} onClick={(event) => editBookmark(event, {editId})} >Edit</button> :
             <button className='btn' id='submit-button' style={submitDefault} onClick={(event) =>validation(event)} >Save</button>
@@ -275,6 +285,7 @@ function App() {
 
     </div>
   )
+
 }
 
 export default App
