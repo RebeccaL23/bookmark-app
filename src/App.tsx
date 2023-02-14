@@ -34,7 +34,7 @@ function App() {
 
   // bookmarks should be initialised with saved local storage, if any, even after reload
   const [bookmarks, setBookmarks] = useState(
-    () => JSON.parse(localStorage.getItem("bookmarks") || "") // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
+    () => JSON.parse(localStorage.getItem("bookmarks")!) // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
     || seed // seed file to input default data
     )
 
@@ -56,6 +56,15 @@ function App() {
     const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
     const regex = new RegExp(urlValidation)
 
+    const isValidUrl = (urlString: string) => {
+      try {
+      	return Boolean(new URL(urlString));
+      }
+      catch(e){
+      	return false;
+      }
+    }
+
     if (urlInput === "") {
       e.preventDefault()
       setValidationMsg(1)
@@ -67,6 +76,10 @@ function App() {
     } else if (!urlInput.match(regex)) {
       e.preventDefault()
       setValidationMsg(3)
+      return;
+    } else if (isValidUrl(urlInput)){
+      e.preventDefault()
+      setValidationMsg(4)
       return;
     } else {
       createBookmark()
@@ -199,7 +212,8 @@ function App() {
           ? <p className="validation">HMM, THAT LOOKS EMPTY.</p>
           : validationMsg === 2
             ? <p className="validation">MUST BE GOOD–YOU'VE ALREADY SAVED THAT.</p>
-            : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p> : ""
+            : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p>
+            : validationMsg === 4 ? <p className="validation">IT DOESN'T LOOK LIKE THAT PAGE EXISTS.</p> : ""
           }
         </form>
       </div>
