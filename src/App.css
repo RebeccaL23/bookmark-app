@@ -82,6 +82,7 @@ table{
   text-align: left;
   width: 100%;
   overflow-y: scroll;
+  table-layout: fixed;
 }
 
 table a:active, table a:visited, table a{
@@ -112,6 +113,7 @@ td, th{
   padding: 0.2rem 0;
   text-align: left;
   vertical-align: top;
+  word-wrap: break-word;
 }
 
 #edit, #delete{

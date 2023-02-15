@@ -54,20 +54,40 @@ function App() {
     const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
     const regex = new RegExp(urlValidation)
 
+    // function UrlExists(url: string) {
+    //   var http = new XMLHttpRequest();
+    //   http.open('HEAD', url, false);
+    //   http.send();
+    //   if (http.status != 404) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }
+    // console.log(UrlExists(urlInput))
+
     if (urlInput === "") {
       e.preventDefault()
+      console.log("ERROR1")
       setValidationMsg(1)
       return;
     } else if ( bookmarks.find((o: Bookmark) => o.url === urlInput) ){ // duplicate url
       e.preventDefault()
+      console.log("ERROR2")
       setValidationMsg(2)
       return;
     } else if (!urlInput.match(regex)) {
+      console.log("ERROR3")
       e.preventDefault()
       setValidationMsg(3)
       return;
+    // } else if (UrlExists(urlInput) === false) {
+    //   console.log("ERROR4")
+    //   e.preventDefault()
+    //   setValidationMsg(4)
+    //   return;
     } else {
-      createBookmark()
+      createBookmark(e)
       setValidationMsg(0)
     }
   }
@@ -84,7 +104,7 @@ function App() {
     const urlInput = (document.getElementById("url-field") as HTMLInputElement).value
     const notesInput = (document.getElementById("notes-field") as HTMLInputElement).value
     const currentDate = new Date();
-
+    console.log('create')
     const newBookmark: Bookmark = {
         id: nanoid(),
         lastEditedRaw: currentDate.getTime(),

@@ -30,7 +30,11 @@ return (
       ? <p className="validation">HMM, THAT LOOKS EMPTY.</p>
       : validationMsg === 2
         ? <p className="validation">MUST BE GOOD–YOU'VE ALREADY SAVED THAT.</p>
-        : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p> : ""
+        : validationMsg === 3
+          ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p>
+          // : validationMsg === 4
+          //   ? <p className="validation">DOESN'T LOOK LIKE THAT PAGE EXISTS...</p>
+            : ""
       }
     </form>
   </>
