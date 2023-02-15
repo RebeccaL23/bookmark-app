@@ -51,9 +51,9 @@ function App() {
 
   function validation(e: React.SyntheticEvent){
     const urlInput = (document.getElementById("url-field") as HTMLInputElement).value
-    const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
-    const regex = new RegExp(urlValidation)
+    const urlValidation = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
 
+    // this function works only for a few sites; CORS policy restricts this from working 100% of the time
     // function UrlExists(url: string) {
     //   var http = new XMLHttpRequest();
     //   http.open('HEAD', url, false);
