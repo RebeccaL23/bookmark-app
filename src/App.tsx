@@ -68,16 +68,13 @@ function App() {
 
     if (urlInput === "") {
       e.preventDefault()
-      console.log("ERROR1")
       setValidationMsg(1)
       return;
     } else if ( bookmarks.find((o: Bookmark) => o.url === urlInput) ){ // duplicate url
       e.preventDefault()
-      console.log("ERROR2")
       setValidationMsg(2)
       return;
     } else if (!urlInput.match(regex)) {
-      console.log("ERROR3")
       e.preventDefault()
       setValidationMsg(3)
       return;
@@ -87,7 +84,7 @@ function App() {
     //   setValidationMsg(4)
     //   return;
     } else {
-      createBookmark(e)
+      createBookmark()
       setValidationMsg(0)
     }
   }
