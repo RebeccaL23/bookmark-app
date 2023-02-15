@@ -52,6 +52,7 @@ function App() {
   function validation(e: React.SyntheticEvent){
     const urlInput = (document.getElementById("url-field") as HTMLInputElement).value
     const urlValidation = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+    const regex = new RegExp(urlValidation)
 
     // this function works only for a few sites; CORS policy restricts this from working 100% of the time
     // function UrlExists(url: string) {
