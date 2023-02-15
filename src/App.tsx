@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-// import Bookmark from './components/bookmark'
+import Bookmark from './components/bookmark'
+import Form from './components/form'
 import Pagination from './components/pagination'
 import {nanoid} from "nanoid" // for custom created ids
 import seed from "./seed" // "seed" file for default data
@@ -19,11 +20,6 @@ function App() {
     notes?: string | null // optional field
   }
 
-  type Pagination = {
-    nPages: number,
-    currentPage: number
-  }
-
   ////////////////////////// INITIALISE STATES //////////////////////////
   // edit mode vs create mode
   const [editMode, setEditMode] = useState(false)
@@ -36,21 +32,23 @@ function App() {
   const [bookmarks, setBookmarks] = useState(
     () => JSON.parse(localStorage.getItem("bookmarks")!) // lazy state initialisation via function so that this doesn't run repeatedly after any state changes
     || seed // seed file to input default data
-    )
+  )
 
   const [currentBookmarkId, setCurrentBookmarkId] = useState(
     // initialises as the first bookmark's id or an empty string, if bookmark is not empty
     (bookmarks[0] && bookmarks[0].id) || ""
-    )
+  )
 
-    // every time the bookmarks array changes, then run the function to set local storage (key = bookmarks, value = bookmarks array stringified)
-    useEffect(() => {
-      localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
-    }, [bookmarks])
+  // every time the bookmarks array changes, then run the function to set local storage (key = bookmarks, value = bookmarks array stringified)
+  useEffect(() => {
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+  }, [bookmarks])
 
   ////////////////////////// FUNCTIONS //////////////////////////
 
   // URL error messages & form validation
+
+
   function validation(e: React.SyntheticEvent){
     const urlInput = (document.getElementById("url-field") as HTMLInputElement).value
     const urlValidation = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
@@ -154,8 +152,6 @@ function App() {
 
   ////////////////////////// PAGINATION //////////////////////////
 
-  // https://levelup.gitconnected.com/a-simple-guide-to-pagination-in-react-facd6f785bd0
-
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(20);
   const indexOfLastBookmark = currentPage * recordsPerPage; // takes last bookmark on page X
@@ -163,12 +159,7 @@ function App() {
   const currentBookmarks = bookmarks.slice(indexOfFirstBookmark, indexOfLastBookmark); // shows only bookmarks between first and last indexed bookmark on page X
   const nPages = Math.ceil(bookmarks.length / recordsPerPage)
 
-  /////// STYLES based on state
-
-  const submitDefault = {
-    background: false ? "#fff" : "#000",
-    color: false ? "#000" : "#fff"
-  }
+  // /////// STYLES based on state
 
   const displayTable = {
     display: bookmarks.length === 0 ? "none" : "table"
@@ -188,20 +179,15 @@ function App() {
       <div id="header">
         <h1 style={displayHeading}>Add a bookmark</h1>
 
-        <form id='bookmark-form' className={bookmarks.length === 0 ? 'form-default' : 'form-top'}>
-          <input id='url-field' type="text" name="url" placeholder="Enter bookmark link"></input>
-          <input id='notes-field' type="text" name="notes" placeholder="Leave a note"></input>
-          { editMode ?
-            <button className='btn' id='edit-button' style={submitDefault} onClick={(event) => editBookmark(event, {editId})} >Edit</button> :
-            <button className='btn' id='submit-button' style={submitDefault} onClick={(event) =>validation(event)} >Save</button>
-          }
-          { validationMsg === 1
-          ? <p className="validation">HMM, THAT LOOKS EMPTY.</p>
-          : validationMsg === 2
-            ? <p className="validation">MUST BE GOOD–YOU'VE ALREADY SAVED THAT.</p>
-            : validationMsg === 3 ? <p className="validation">HEY, THAT'S NOT A VALID LINK.</p> : ""
-          }
-        </form>
+        <Form
+          bookmarks = {bookmarks}
+          editMode = {editMode}
+          editId = {editId}
+          editBookmark = {editBookmark}
+          validation = {validation}
+          validationMsg = {validationMsg}
+        />
+
       </div>
 
       <div className="data">
@@ -217,37 +203,15 @@ function App() {
             </tr>
           </thead>
 
-          {/* { bookmarks.map((bookmark: Bookmark) => {
-            return (
-              <tbody>
-                <tr>
-                  <td>{bookmark.lastEdited}</td>
-                  <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
-                  <td>{bookmark.notes}</td>
-                  <td id="edit" onClick={(event) => loadBookmark(event, bookmark.id)}>Edit</td>
-                  <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
-                </tr>
-              </tbody>
-            )
-          })} */}
-
-          {currentBookmarks.map((bookmark: Bookmark) => (
-            <tbody>
-              <tr>
-                <td>{bookmark.lastEditedDate}</td>
-                <td><a target="_blank" href={bookmark.url}>{bookmark.url}</a></td>
-                <td>{bookmark.notes}</td>
-                <td id="edit" onClick={(event) => loadBookmark(bookmark.id)}>Edit</td>
-                <td id="delete" onClick={(event) => deleteBookmark(event, bookmark.id)}>Delete</td>
-              </tr>
-            </tbody>
-          ))}
+          <Bookmark
+            currentBookmarks = {currentBookmarks}
+            loadBookmark = { loadBookmark }
+            deleteBookmark = { deleteBookmark }
+          />
         </table>
       </div>
 
-
       <div id='footer'>
-
         {bookmarks.length === 0 ? "" : <Pagination
           nPages = {nPages}
           currentPage = {currentPage}

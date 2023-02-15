@@ -3,10 +3,11 @@ import { useState } from 'react'
 interface Props {
   nPages: number,
   currentPage: number,
-  setCurrentPage: any,
+  setCurrentPage: Function,
 };
 
 const Pagination: React.FC<Props> = (props) => {
+
   const pageNumbers = [...Array(props.nPages + 1).keys()].slice(1)
 
   const nextPage = () => {
